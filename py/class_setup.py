@@ -30,13 +30,14 @@ class BasePiece:
 	
 
 class Player(BasePiece):
-	def __init__(self, name : str, hp : list, atk : int, status : int, inventory : list, buff : int, level : list):
+	def __init__(self, name : str, hp : list, atk : int, status : int, inventory : list, gold : int, buff : int, level : list):
 		super(BasePiece, self).__init__()
 		self.name = name
 		self.hp = hp
 		self.atk = atk
 		self.status = status
 		self.inventory = inventory
+		self.gold = gold
 		self.buff = buff
 		self.level = level # index 0 is actual level, index 1 is exp needed to level up, index 2 is current exp
 
