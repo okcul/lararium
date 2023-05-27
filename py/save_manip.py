@@ -18,7 +18,7 @@ def file_save(player : object, gameplay : dict):
 def file_load(player_name : str):
     player_name = player_name.lower()
 
-    for filename in listdir("./json"):
+    for filename in listdir("./json/saves"):
         filename = str(filename)
         if player_name in filename.lower():
 
