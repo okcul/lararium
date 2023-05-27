@@ -18,10 +18,10 @@ class BasePiece:
 				status_str = "Fine"
 			case 1:
 				status_str = "Poisoned"
-		return f"Name: {self.name} \nHP: {self.hp} \nAtk: {self.atk} \nStatus: {status_str}"
+		return f"Name: {self.name} \nHP: {self.hp[0]}/{self.hp[1]} \nAtk: {self.atk} \nStatus: {status_str}"
 	
 	def attack(self, enemy):
-		if self.status != 0:
+		if self.status == 0:
 			modifier = randint(-3, 3)
 			enemy.hp[0] -= (self.atk + modifier)
 			return f"{enemy.name} has taken {self.atk + modifier} damage from {self.name}!"
