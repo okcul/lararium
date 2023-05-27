@@ -24,7 +24,7 @@ class BasePiece:
 		if self.status == 0:
 			modifier = randint(-3, 3)
 			enemy.hp[0] -= (self.atk + modifier)
-			return f"{enemy.name} has taken {self.atk + modifier} damage from {self.name}!"
+			return f"{enemy.name} has taken {self.atk + modifier} damage from {self.name}! They now have {enemy.hp[0]} HP"
 		else:
 			return 0 # code for action failed, turn not used
 	
