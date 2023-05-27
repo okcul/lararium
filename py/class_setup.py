@@ -18,13 +18,17 @@ class BasePiece:
 				status_str = "Fine"
 			case 1:
 				status_str = "Poisoned"
-		return f"Name: {self.name} \nHP: {self.hp[0]}/{self.hp[1]} \nAtk: {self.atk} \nStatus: {status_str}"
+		return f"\nName: {self.name} \nHP: {self.hp[0]}/{self.hp[1]} \nAtk: {self.atk} \nStatus: {status_str}"
 	
 	def attack(self, enemy):
 		if self.status == 0:
-			modifier = randint(-3, 3)
+			modifier = randint(-3, 3) 
 			enemy.hp[0] -= (self.atk + modifier)
-			return f"{enemy.name} has taken {self.atk + modifier} damage from {self.name}! They now have {enemy.hp[0]} HP"
+
+			if enemy.hp[0] <= 0:
+				enemy.hp[0] = 0
+
+			return f"\n{enemy.name} has taken {self.atk + modifier} damage from {self.name}! They now have {enemy.hp[0]} HP"
 		else:
 			return 0 # code for action failed, turn not used
 	
@@ -45,10 +49,23 @@ class Player(BasePiece):
 		print(enemy)
 		return 0 # code for action succeeded, turn not used
 	
+	def level_up(self):
+		if self.level[2] >= self.level[1]:
+			self.level[0] += 1
+			self.level[1] = round(self.level[1]*1.7)
+			self.level[2] = 0
+
+			self.hp[1] = round(self.hp[1]*1.2)
+			self.hp[0] = self.hp[1]
+
+			self.atk = round(self.atk*1.2)
+
+			print(f"\n{self.name} has leveled up! You are now level {self.level[0]}.")
+	
 	def use_item(self):
 		if len(self.inventory) != 0: # checks if there's actually anything in the inventory
 			while True: # to prevent player from losing turn when using an item not in their inventory
-				used_item = input("What item to use?")
+				used_item = input("\nWhat item to use? ")
 				if used_item not in self.inventory:
 					print("You don't have this item!")
 				else:
@@ -56,7 +73,7 @@ class Player(BasePiece):
 						case 'potion':
 							self.hp[0] += 20
 							self.inventory.remove('potion')
-							return f"{self.name} has healed themselves by 20 HP!"
+							return f"\n{self.name} has healed themselves by 20 HP!"
 		else:
 			return 0 # code for action failed, turn not used
 
