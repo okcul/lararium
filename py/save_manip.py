@@ -25,7 +25,8 @@ def file_load(player_name : str):
             with open(f"json/saves/{player_name}.json", "r") as save_data:
                 player_dict = load(save_data)
 
-    return player_dict, f"Data of '{player_name}' successfully loaded from json/saves/{player_name}.json!"
+    print(f"Data of '{player_name}' successfully loaded from json/saves/{player_name}.json!")
+    return player_dict
 
 
 def file_delete(player_name : str):
