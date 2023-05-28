@@ -57,7 +57,6 @@ def hub():
                 if You.hp[0] <= 0:
                     print("You need to heal up first. Head [home] to do so!")
                 else:
-                    print("\n ok im gonna put u in forest cuz i gotta debug thanks bbgorl")
                     area = 'forest'
                     CurrentEnemy = enemy_generation(area)
                     combat_loop(You, CurrentEnemy)
