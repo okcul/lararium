@@ -11,6 +11,13 @@ gameplay_stats = {
     'unlocked_areas' : ['forest']
 }
 
+shop = {
+    'potion' : 25,
+    'glass shard' : 50,
+    'tomato' : 100,
+}
+
+
 You = Player("", [50, 50], 7, 0, ['potion'], 250, 0, [1, 25, 0]) # name, hp (current, max), atk, status id, inventory, buff, level (level, exp needed, current exp)
 
 def menu():
@@ -41,11 +48,11 @@ def menu():
 
 def hub():
     while True:
-        print("\nYou are currently in a small town. Would you like to visit the [shop], go [explore], or go [home]?")
+        print("\nYou are currently in a small town. Would you like to visit the [shop], go [explore], or go [home]? Type [save] to save your game.")
         visit = input("Input: ").lower()
         match visit:
             case 'shop':
-                print("lower is working :3")
+                shop_loop()
             case 'explore':
                 if You.hp[0] <= 0:
                     print("You need to heal up first. Head [home] to do so!")
@@ -57,6 +64,36 @@ def hub():
             case 'home':
                 You.hp[0] = You.hp[1]
                 print("\nYou go home and your mother feeds you the most scrumptious meal of your life. Your health is now full!")
+            case 'save':
+                print(file_save(You, gameplay_stats))
+
+
+def shop_loop():
+    shop_items = list(shop.keys())
+    price = ""
+    opt = ""
+    buy = ""
+    print(f"\n{shop_items}")
+    while True:
+        print("\nWhat would you like to buy from the shop? Type [exit] to exit.")
+        buy = input("Input: ").lower()
+
+        if buy == "exit":
+            break
+        elif buy not in shop_items:
+            print("This item isn't in the shop!")
+        else:
+            price = shop[buy]
+            while True:
+                print(f"This item is {price} gold. Type [confirm] to purchase, [cancel] to return.")
+                opt = input("Input: ").lower()
+                match opt:
+                    case 'confirm':
+                        You.gold -= price
+                        print(f"You are now the owner of a {buy}! You now have {You.gold} gold.")
+                        break
+                    case 'cancel':
+                        break
 
 
 
@@ -78,6 +115,7 @@ def enemy_generation(area : str):
 def combat_loop(player : object, enemy : object):
     action = ""
     earned_exp = round((enemy.hp[1] + enemy.atk)/3)
+    earned_gold = round((enemy.hp[1] + enemy.atk)/4)
     while True:
         print(f"\nYou are fighting a {enemy.name}.")
         action = input("What do you want to do? [attack, inspect, use item] ")
@@ -88,7 +126,16 @@ def combat_loop(player : object, enemy : object):
         if enemy.hp[0] <= 0:
             print(f"\n{player.name} has successfully defeated the {enemy.name} and earned {earned_exp} EXP!")
             player.level[2] += earned_exp
+            player.gold += earned_gold
             player.level_up()
+
+            if player.buff != 0:
+                match player.buff:
+                    case 'glass shard':
+                        player.atk -= 3
+                player.buff == 0
+
+
             break
         elif enemy.status != 0:
             print(f"\nThe {enemy.name} is unable to attack!")
